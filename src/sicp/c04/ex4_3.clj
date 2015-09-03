@@ -1,4 +1,4 @@
-(ns sicp.c04.ex4-2
+(ns sicp.c04.ex4-3
   (:require [sicp.c04.base :refer :all])
   (:refer-clojure :exclude [eval apply]))
 

@@ -14,7 +14,7 @@
 (defn variable? [exp]
   (symbol? exp))
 
-(defn- tagged-list? [exp tag]
+(defn tagged-list? [exp tag]
   (and (list? exp)
        (= (first exp) tag)))
 
