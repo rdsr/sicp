@@ -1,6 +1,7 @@
 (ns sicp.c04.base-test
   (:require [clojure.test :refer :all]
-            [sicp.c04.base :refer :all]))
+            [sicp.c04.base :refer :all])
+  (:refer-clojure :exclude [eval apply]))
 
 (deftest representing-exps
   (testing "self-evaluating"
@@ -49,6 +50,4 @@
                 (-x)))))
     (is (= (cond->if '(cond (else (+ x 2))))
            '(+ x 2)))
-    (is (false? (cond->if '(cond ())))))
-  )
-
+    (is (false? (cond->if '(cond))))))

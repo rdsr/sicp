@@ -40,12 +40,6 @@
       (first e)
       e)))
 
-
-(defn lambda? [exp] (tagged-list? exp 'lambda))
-(defn lambda-parameters [exp] (second exp))
-(defn lambda-body [exp] (nth exp 2))
-(defn mk-lambda [args body] (list 'lambda args body))
-
 (defn definition-value [exp]
   (let [e (second exp)]
     (if (symbol? e)
@@ -53,15 +47,20 @@
       (mk-lambda (rest (second exp))
                  (nth exp 2)))))
 
-(defn definition-value [exp]
-  (let [e (second exp)]
-    (if (list? e)
-      ;
-      (nth exp 2))))
+(defn mk-definition [variable value]
+  (list 'define variable value))
 
 (defn eval-definition [exp env]
   (define-variable! (definition-variable exp)
                     (eval (definition-value exp) env)))
+
+
+(defn lambda? [exp] (tagged-list? exp 'lambda))
+(defn lambda-parameters [exp] (second exp))
+(defn lambda-body [exp] (nth exp 2))
+(defn mk-lambda [args body] (list 'lambda args body))
+
+
 
 (defn if? [exp]
   (tagged-list? exp 'if))
