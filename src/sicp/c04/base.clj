@@ -1,9 +1,12 @@
 (ns sicp.c04.base
-  (:refer-clojure :exclude [eval apply]))
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 (declare eval apply set-variable-value! define-variable! lookup-variable-value text-of-quotation
          mk-procedure primitive-procedure? apply-primitive-procedure compound-procedure?
          procedure-body extend-environment procedure-parameters procedure-environment)
+
+(defn false? [x] (= x false))
+(defn true? [x] (not (false? x)))
 
 (defn self-evaluating? [exp]
   (cond
@@ -31,6 +34,12 @@
   (set-variable-value! (assignemt-variable exp)
                        (eval (assignemt-value exp) env)))
 
+
+(defn lambda? [exp] (tagged-list? exp 'lambda))
+(defn lambda-parameters [exp] (second exp))
+(defn lambda-body [exp] (nth exp 2))
+(defn mk-lambda [args body] (list 'lambda args body))
+
 (defn definition? [exp]
   (tagged-list? exp 'define))
 
@@ -53,13 +62,6 @@
 (defn eval-definition [exp env]
   (define-variable! (definition-variable exp)
                     (eval (definition-value exp) env)))
-
-
-(defn lambda? [exp] (tagged-list? exp 'lambda))
-(defn lambda-parameters [exp] (second exp))
-(defn lambda-body [exp] (nth exp 2))
-(defn mk-lambda [args body] (list 'lambda args body))
-
 
 
 (defn if? [exp]
@@ -106,6 +108,13 @@
 (defn no-operands? [ops] (empty? ops))
 (defn first-operand [ops] (first ops))
 (defn rest-operands [ops] (rest ops))
+
+(defn mk-procedure [parameters body env]
+  (list 'procedure parameters body env))
+(defn compound-procedure? [p] (tagged-list? p 'procedure))
+(defn procedure-parameters [p] (second p))
+(defn procedure-body [p]) (nth p 2)
+(defn procedure-env [p] (nth p 3))
 
 (defn cond? [exp] (tagged-list? exp 'cond))
 (defn cond-clauses [exp] (rest exp))
