@@ -113,7 +113,7 @@
   (list 'procedure parameters body env))
 (defn compound-procedure? [p] (tagged-list? p 'procedure))
 (defn procedure-parameters [p] (second p))
-(defn procedure-body [p]) (nth p 2)
+(defn procedure-body [p] (nth p 2))
 (defn procedure-env [p] (nth p 3))
 
 (defn cond? [exp] (tagged-list? exp 'cond))

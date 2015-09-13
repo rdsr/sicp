@@ -1,5 +1,7 @@
 (ns sicp.c04.ex4-1
-  (:refer-clojure :exclude [eval]))
+  (:require [sicp.c04.base :refer :all])
+  (:refer-clojure :exclude [eval apply]))
+
 
 ;(defn list-of-values [exps env]
 ;  (if (no-operands? exps)
