@@ -26,6 +26,7 @@
       (is (= (lookup-var-value env 'y) 2))))
 
   (testing "mk-unbound"
-    (let [env (entend-env empty '(x) '(1))])
-    ))
+    (let [env (extend-env empty-env '(x) '(1))]
+      (mk-unbound! env 'x)
+      (is (thrown? Error (lookup-var-value env 'x))))))
 
