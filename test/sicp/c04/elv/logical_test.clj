@@ -1,6 +1,6 @@
-(ns sicp.c04.ex4-4
+(ns sicp.c04.elv.logical-test
   (:require [clojure.test :refer :all])
-  (:refer-clojure :exclude [eval apply]))
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 (deftest testing-exps
   (testing "and->if"

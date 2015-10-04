@@ -1,6 +1,9 @@
-(ns sicp.c04.ex4-6
-  (:require [sicp.c04.elv :refer :all])
-  (:refer-clojure :exclude [eval apply]))
+(ns sicp.c04.elv.let
+  (:require [sicp.c04.elv.definition :refer [mk-definition]]
+            [sicp.c04.elv.lambda :refer [mk-lambda]]
+            [sicp.c04.elv.begin :refer [sequence->exp]]
+            [sicp.c04.elv.util :refer [tagged-list?]])
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 (defn let? [exp]
   (tagged-list? exp 'let))

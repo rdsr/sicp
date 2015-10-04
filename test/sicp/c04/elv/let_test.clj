@@ -1,6 +1,7 @@
-(ns sicp.c04.ex4-6
+(ns sicp.c04.elv.let_test
   (:require [clojure.test :refer :all])
-  (:refer-clojure :exclude [eval apply]))
+  (:require [sicp.c04.elv.let :refer [let->combination]])
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 (deftest testing-let-exps
   (testing "let->cobination"

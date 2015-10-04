@@ -1,7 +1,11 @@
-(ns sicp.c04.base-test
+(ns sicp.c04.elv-test
   (:require [clojure.test :refer :all]
-            [sicp.c04.elv :refer :all])
-  (:refer-clojure :exclude [eval apply]))
+            [sicp.c04.elv :refer :all]
+            [sicp.c04.elv.assignment :refer :all]
+            [sicp.c04.elv.definition :refer :all]
+            [sicp.c04.elv.cond :refer :all]
+            [sicp.c04.elv.begin :refer :all])
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 (deftest representing-exps
   (testing "self-evaluating"

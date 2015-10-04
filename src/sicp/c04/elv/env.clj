@@ -6,7 +6,7 @@
 (defn first-frame [e] (first e))
 (defn enclosing-env [e] (rest e))
 
-(defn lookup-var-value [e var]
+(defn lookup-variable-value [e var]
   (if (empty-env? e)
     (throw (Error. (str "Unbound variable -- lookup-var-value " var)))
     (let [f (first-frame e)]
