@@ -1,5 +1,9 @@
 (ns sicp.c04.elv.env.frames)
 
+;; Defining a protocol for a frame, since later I'd
+;; like to implement frames maybe not as records (maps)
+;; but something else
+
 (defprotocol IFrame
   (all-vars [f])
   (all-values [f])
@@ -9,12 +13,13 @@
   (replace-binding [f var value])
   (remove-binding [f var]))
 
-(defrecord FrameR [vars values]
+
+(defrecord Frame []
   IFrame
-  (all-vars [f] vars)
-  (all-values [f] values)
+  (all-vars [f] (keys f))
+  (all-values [f] (vals f))
   (has-binding? [f var] (contains? f var))
-  (read-binding-value [f var] (f var))
+  (read-binding-value [f var] (get f var))
   (add-binding [f var value] (assoc f var value))
 
   (replace-binding [f var value]
@@ -26,4 +31,7 @@
     (dissoc f var)))
 
 (defn mk-frame [vars values]
-  (FrameR. vars values))
+  (reduce (fn [r [k v]]
+            (assoc r k v))
+          (Frame.)
+          (zipmap vars values)))

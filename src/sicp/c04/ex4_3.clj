@@ -1,5 +1,5 @@
 (ns sicp.c04.ex4-3
-  ;(:require [sicp.c04.base :refer :all :exclude [application?]])
+  (:require [sicp.c04.base :refer :all :exclude [application?]])
   (:refer-clojure :exclude [eval apply]))
 
 (defn application? [exp] (tagged-list? exp 'call))

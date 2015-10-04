@@ -1,83 +1,71 @@
 (ns sicp.c04.elv.env
-  (:import (sicp.c04.elv.env Frame)))
+  ;(:import (sicp.c04.elv.env.frames IFrame))
+  (:use [sicp.c04.elv.env.frames])
+  (:import (clojure.lang IPersistentList)))
 
+(defprotocol IEnv
+  (empty-env? [e])
+  (add-frame [e ^IFrame f])
+  (first-frame [e])
+  (lookup-var-value [e var])
+  (extend-env [e vars values])
+  (enclosing-env [e])
+  (define-variable! [e var value])
+  (set-variable-value! [e var value])
+  (mk-unbound! [e var])
+  )
 
-;; -- frames data abstraction
-(defn mk-frame [vars values] (atom (zipmap vars values)))
+(deftype Env [^IPersistentList frames]
+  IEnv
+  (empty-env? [e] (empty? frames))
+  (add-frame [e f] (Env. (conj frames f)))
+  (first-frame [e] (first frames))
+  (enclosing-env [e] (Env. (rest frames)))
 
-(defn frame-variables [frame] (keys @frame))
+  (lookup-var-value [e var]
+    (loop [[f & r] frames]
+      (cond
+        (nil? f) (throw (Error. (str "Unbound variable -- lookup-var-value " var)))
+        (has-binding? @f var) (read-binding-value @f var)
+        :else (recur r))))
 
-(defn frame-values [frame] (vals @frame))
+  (extend-env [e vars values]
+    (let [cvr (count vars)
+          cvl (count values)]
+      (if (= cvr cvl)
+        (add-frame e (atom (mk-frame vars values)))
+        (if (< cvr cvl)
+          (throw (Error. (str "Too many values supplied" vars values)))
+          (throw (Error. (str "Too few values supplied" vars values)))))))
 
-(defn has-binding? [frame var] (contains? @frame var))
+  (define-variable! [e var value]
+    ;; We assume the env always has atleast one frame
+    ;; TODO: Verify or make sure that this assumption is valid
+    (swap! (first-frame e) add-binding var value)
+    'ok)
 
-(defn read-binding-value [frame var] (@frame var))
+  (set-variable-value! [e var value]
+    (loop [[f & r] frames]
+      (cond (nil? f) (throw (Error. (str "Unbound variable -- set! " var)))
+            (has-binding? @f var) (do (swap! f replace-binding var value) 'ok)
+            :else (recur r))))
 
-(defn add-binding-to-frame [frame var value] (swap! frame assoc var value))
+  (mk-unbound! [e var]
+    (loop [[f & r] frames]
+      (cond (nil? f) (s)
+            (has-binding? @f var) (do (swap! f remove-binding var) 'ok)
+            :else (recur r))))
+  )
 
-(defn remove-binding-from-frame [frame var]
-  (assert (has-binding? frame var))
-  (swap! frame dissoc var))
-
-(defn replace-binding-in-frame [frame var value]
-  (assert (has-binding? frame var))
-  (add-binding-to-frame frame var value))
-
-
-(defn enclosing-env [env] (rest env))
-(defn first-frame [env] (first env))
-(defn empty-env? [env] (empty? env))
-(def empty-env ())
-(defn add-frame-to-env [env f] (cons f env))
-
-(defn lookup-var-value [env var]
-  (if (empty-env? env)
-    (throw (Error. (str "Unbound variable -- lookup-var-value " var)))
-    (let [f (first-frame env)
-          r (enclosing-env env)]
-      (if (has-binding? f var)
-        (read-binding-value f var)
-        (recur r var)))))
-
-(defn extend-env [base-env vars values]
-  (let [cvr (count vars)
-        cvl (count values)]
-    (if (= cvr cvl)
-      (add-frame-to-env base-env
-                        (mk-frame vars values))
-      (if (< cvr cvl)
-        (throw (Error. (str "Too many values supplied" vars values)))
-        (throw (Error. (str "Too few values supplied" vars values)))))))
-
-(defn define-variable! [env var value]
-  ;; We assume the env always has atleast one frame?
-  (add-binding-to-frame (first-frame env) var value)
-  env)
-
-(defn set-variable-value! [env var value]
-  (if (empty-env? env)
-    (throw (Error. (str "Unbound variable -- set! " var)))
-    (let [f (first-frame env)
-          r (enclosing-env env)]
-      (if (has-binding? f var)
-        (replace-binding-in-frame f var value)
-        (recur r var value)))))
-
-(defn mk-unbound! [env var]
-  (if (empty-env? env)
-    false
-    (let [f (first-frame env)]
-      (if (has-binding? f var)
-        (do (remove-binding-from-frame f var)
-            true)
-        (recur (enclosing-env env) var)))))
+(def empty-env (Env. ()))
 
 (defn setup-env []
-  (let [intial-env (extend-env (primitive-procedure-names)
-                               (primitive-procedure-objects)
-                               empty-env)]
+  (let [intial-env (extend-env empty-env
+                               []         ; (primitive-procedure-names)
+                               []         ; (primitive-procedure-objects)
+                               )]
     (define-variable! 'true true intial-env)
     (define-variable! 'false false intial-env)
     intial-env))
 
-(defn global-env (setup-env))
+;(defn global-env (setup-env))

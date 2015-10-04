@@ -1,6 +1,6 @@
 (ns sicp.c04.base-test
   (:require [clojure.test :refer :all]
-            [sicp.c04.base :refer :all])
+            [sicp.c04.elv :refer :all])
   (:refer-clojure :exclude [eval apply]))
 
 (deftest representing-exps

@@ -1,9 +1,5 @@
-(ns sicp.c04.base
+(ns sicp.c04.elv
   (:refer-clojure :exclude [eval apply true? false?]))
-
-(declare eval apply set-variable-value! define-variable! lookup-variable-value text-of-quotation
-         mk-procedure primitive-procedure? apply-primitive-procedure compound-procedure?
-         procedure-body extend-environment procedure-parameters procedure-environment)
 
 (defn false? [x] (= x false))
 (defn true? [x] (not (false? x)))
@@ -24,6 +20,8 @@
 (defn quoted? [exp]
   (tagged-list? exp 'quote))
 
+
+;; -- assignment
 (defn assignemt? [exp]
   (tagged-list? exp 'set!))
 (defn assignemt-variable [exp]
@@ -35,11 +33,13 @@
                        (eval (assignemt-value exp) env)))
 
 
+;; -- lambda
 (defn lambda? [exp] (tagged-list? exp 'lambda))
 (defn lambda-parameters [exp] (second exp))
 (defn lambda-body [exp] (nth exp 2))
 (defn mk-lambda [args body] (list 'lambda args body))
 
+;; -- definition
 (defn definition? [exp]
   (tagged-list? exp 'define))
 
@@ -63,7 +63,7 @@
   (define-variable! (definition-variable exp)
                     (eval (definition-value exp) env)))
 
-
+;; -- if
 (defn if? [exp]
   (tagged-list? exp 'if))
 (defn if-predicate [exp]
@@ -82,6 +82,8 @@
     (eval (if-consequent exp) env)
     (eval (if-alternative exp) env)))
 
+
+;; -- begin
 (defn begin? [exp] (tagged-list? exp 'begin))
 (defn begin-actions [exp] (rest exp))
 (defn last-exp? [sq] (-> sq rest empty?))
@@ -101,6 +103,8 @@
     :else (do (eval (first-exp sq) env)
               (eval-sequence (rest-exps sq) env))))
 
+
+;; -- application
 ;; a procedure application is not one of the above exps.
 (defn application? [exp] (list? exp))
 (defn operator [exp] (first exp))
@@ -108,7 +112,14 @@
 (defn no-operands? [ops] (empty? ops))
 (defn first-operand [ops] (first ops))
 (defn rest-operands [ops] (rest ops))
+(defn list-of-values [exps env]
+  (if (no-operands? exps)
+    '()
+    (cons (eval (first-operand exps) env)
+          (list-of-values (rest-operands exps) env))))
 
+
+;; -- procedure
 (defn mk-procedure [parameters body env]
   (list 'procedure parameters body env))
 (defn compound-procedure? [p] (tagged-list? p 'procedure))
@@ -116,6 +127,8 @@
 (defn procedure-body [p] (nth p 2))
 (defn procedure-env [p] (nth p 3))
 
+
+;; -- cond
 (defn cond? [exp] (tagged-list? exp 'cond))
 (defn cond-clauses [exp] (rest exp))
 (defn cond-pred-clause [clause] (first clause))
@@ -137,13 +150,8 @@
 (defn cond->if [exp]
   (expand-clauses (cond-clauses exp)))
 
-(defn list-of-values [exps env]
-  (if (no-operands? exps)
-    '()
-    (cons (eval (first-operand exps) env)
-          (list-of-values (rest-operands exps) env))))
 
-;; eval
+;; -- eval
 (defn eval [exp env]
   (cond
     (self-evaluating? exp) exp
