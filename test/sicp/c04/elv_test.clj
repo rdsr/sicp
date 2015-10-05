@@ -4,7 +4,8 @@
             [sicp.c04.elv.assignment :refer :all]
             [sicp.c04.elv.definition :refer :all]
             [sicp.c04.elv.cond :refer :all]
-            [sicp.c04.elv.begin :refer :all])
+            [sicp.c04.elv.begin :refer :all]
+            [sicp.c04.elv.sym :refer :all])
   (:refer-clojure :exclude [eval apply true? false?]))
 
 (deftest representing-exps

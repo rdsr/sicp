@@ -1,5 +1,6 @@
 (ns sicp.c04.elv.logical-test
   (:require [clojure.test :refer :all])
+  (:require [sicp.c04.elv.logical :refer :all])
   (:refer-clojure :exclude [eval apply true? false?]))
 
 (deftest testing-exps
