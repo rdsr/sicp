@@ -1,5 +1,7 @@
 (ns sicp.c04.elv.if
-  (use [sicp.c04.elv.util]))
+  (:require [sicp.c04.elv.util :refer [tagged-list?]]
+            [sicp.c04.elv.sym :refer [true?]])
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 ;; -- if
 (defn if? [exp]
@@ -15,3 +17,9 @@
 (defn mk-if [pred consequent alt]
   (list 'if pred consequent alt))
 
+(declare eval)
+
+(defn eval-if [exp env]
+  (if (true? (eval (if-predicate exp) env))
+    (eval (if-consequent exp) env)
+    (eval (if-alternative exp) env)))

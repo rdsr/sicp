@@ -16,7 +16,7 @@
     (is (variable? 'x)))
   (testing "assignment"
     (let [v '(set! x 1)]
-      (is (assignemt? v))
+      (is (assignment? v))
       (is (= (assignemt-value v) 1))
       (is (= (assignemt-variable v) 'x))))
   (testing "definition"

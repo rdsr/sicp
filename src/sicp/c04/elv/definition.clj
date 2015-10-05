@@ -1,6 +1,8 @@
 (ns sicp.c04.elv.definition
-  (use [sicp.c04.elv.util])
-  (require [sicp.c04.elv.lambda :refer [mk-lambda]]))
+  (:use [sicp.c04.elv.util])
+  (:require [sicp.c04.elv.lambda :refer [mk-lambda]]
+            [sicp.c04.elv.env :refer [define-variable!]])
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 ;; -- definition
 (defn definition? [exp]
@@ -22,3 +24,10 @@
 (defn mk-definition [variable value]
   (list 'define variable value))
 
+(declare eval)
+
+(defn eval-definition [exp env]
+  (define-variable!
+    env
+    (definition-variable exp)
+    (eval (definition-value exp) env)))

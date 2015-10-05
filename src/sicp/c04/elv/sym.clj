@@ -12,5 +12,3 @@
 
 (defn variable? [exp]
   (symbol? exp))
-
-

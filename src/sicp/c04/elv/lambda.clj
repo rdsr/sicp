@@ -1,5 +1,6 @@
 (ns sicp.c04.elv.lambda
-  (use [sicp.c04.elv.util]))
+  (:use [sicp.c04.elv.util])
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 ;; -- lambda
 (defn lambda? [exp] (tagged-list? exp 'lambda))

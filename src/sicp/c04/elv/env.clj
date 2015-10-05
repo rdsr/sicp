@@ -1,5 +1,6 @@
 (ns sicp.c04.elv.env
-  (:use [sicp.c04.elv.env.frames]))
+  (:use [sicp.c04.elv.env.frames])
+  (:refer-clojure :exclude [eval apply true? false?]))
 
 (defn empty-env? [e] (empty? e))
 (defn add-frame [e f] (conj e f))
