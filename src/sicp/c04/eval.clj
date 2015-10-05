@@ -1,4 +1,4 @@
-(ns sicp.c04.elv
+(ns sicp.c04.eval
   (:refer-clojure :exclude [eval apply true? false?])
   (:require [sicp.c04.apply :refer [apply]]
             [sicp.c04.elv.application :refer [application? eval-operands operator operands]]
