@@ -16,17 +16,17 @@
 (defn eval [exp env]
   (cond
     (self-evaluating? exp) exp
-    (variable? exp) (lookup-variable-value env exp)
+    (variable? exp) (lookup-variable-value exp env)
     (quoted? exp) (text-of-quotation exp)
-    (assignment? exp) (eval-assignment exp env)
-    (definition? exp) (eval-definition exp env)
-    (if? exp) (eval-if exp env)
+    (assignment? exp) (eval-assignment eval exp env)
+    (definition? exp) (eval-definition eval exp env)
+    (if? exp) (eval-if eval exp env)
     (lambda? exp) (mk-procedure (lambda-parameters exp)
                                 (lambda-body exp)
                                 env)
-    (begin? exp) (eval-sequence (begin-actions exp) env)
+    (begin? exp) (eval-sequence eval (begin-actions exp) env)
     (cond? exp) (eval (cond->if exp) env)
-    (application? exp) (apply (eval (operator exp) env)
-                              (eval-operands (operands exp) env))
-    :else (Error. (str "Unknown expression type -- eval" exp))))
-
+    (application? exp) (apply eval
+                              (eval (operator exp) env)
+                              (eval-operands eval (operands exp) env))
+    :else (throw (Error. (str "Unknown expression type -- eval" exp)))))

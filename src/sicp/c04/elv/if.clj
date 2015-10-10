@@ -6,20 +6,22 @@
 ;; -- if
 (defn if? [exp]
   (tagged-list? exp 'if))
+
 (defn if-predicate [exp]
   (second exp))
+
 (defn if-consequent [exp]
   (nth exp 2))
+
 (defn if-alternative [exp]
   (if (= (count exp) 4)
     (nth exp 3)
     'false))
+
 (defn mk-if [pred consequent alt]
   (list 'if pred consequent alt))
 
-(declare eval)
-
-(defn eval-if [exp env]
-  (if (true? (eval (if-predicate exp) env))
-    (eval (if-consequent exp) env)
-    (eval (if-alternative exp) env)))
+(defn eval-if [eval-fn exp env]
+  (if (true? (eval-fn (if-predicate exp) env))
+    (eval-fn (if-consequent exp) env)
+    (eval-fn (if-alternative exp) env)))

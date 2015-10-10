@@ -12,13 +12,16 @@
   (testing "self-evaluating"
     (is (self-evaluating? 1))
     (is (self-evaluating? "1")))
+
   (testing "variable?"
     (is (variable? 'x)))
+
   (testing "assignment"
     (let [v '(set! x 1)]
       (is (assignment? v))
       (is (= (assignemt-value v) 1))
       (is (= (assignemt-variable v) 'x))))
+
   (testing "definition"
     (let [v1 '(define x 1)
           v2 '(define (x a b c d)
@@ -34,6 +37,7 @@
       (is (= (definition-value v1) '1))
       (is (= (definition-value v2)
              (definition-value v3)))
+
       ))
   (testing "begin"
     (let [v1 '(begin x1 x2)]

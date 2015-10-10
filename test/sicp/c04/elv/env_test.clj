@@ -5,28 +5,29 @@
 
 (deftest env-manipulation
   (testing "extend-env"
-    (let [env (extend-env empty-env '(k) '(v))]
-      (is (= (lookup-variable-value env 'k) 'v))
-      (is (= (lookup-variable-value (extend-env env '(k1) '(v1)) 'k1)
+    (let [env (extend-env '(k) '(v) empty-env)]
+      (is (= (lookup-variable-value 'k env) 'v))
+      (is (= (lookup-variable-value 'k1
+                                    (extend-env '(k1) '(v1) env))
              'v1))
       ;; todo can I do away with exceptions?
-      (is (thrown? Error (lookup-variable-value env 'k1)))))
+      (is (thrown? Error (lookup-variable-value 'k1 env)))))
 
   (testing "define var"
-    (let [env (extend-env empty-env '(k) '(v))]
-      (define-variable! env 'x 1)
-      (is (= (lookup-variable-value env 'x)
+    (let [env (extend-env '(k) '(v) empty-env)]
+      (define-variable! 'x 1 env)
+      (is (= (lookup-variable-value 'x env)
              1))))
 
   (testing "set var"
-    (let [env (extend-env empty-env '(x) '(1))]
-      (is (thrown? Error (set-variable-value! env 'y 1)))
-      (define-variable! env 'y 1)
-      (set-variable-value! env 'y 2)
-      (is (= (lookup-variable-value env 'y) 2))))
+    (let [env (extend-env '(x) '(1) empty-env)]
+      (is (thrown? Error (set-variable-value! 'y 1 env)))
+      (define-variable! 'y 1 env)
+      (set-variable-value! 'y 2 env)
+      (is (= (lookup-variable-value 'y env) 2))))
 
   (testing "mk-unbound"
-    (let [env (extend-env empty-env '(x) '(1))]
-      (mk-unbound! env 'x)
-      (is (thrown? Error (lookup-variable-value env 'x))))))
+    (let [env (extend-env '(x) '(1) empty-env)]
+      (mk-unbound! 'x env)
+      (is (thrown? Error (lookup-variable-value 'x env))))))
 

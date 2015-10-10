@@ -4,15 +4,14 @@
             [sicp.c04.elv.env :refer [extend-env]])
   (:refer-clojure :exclude [eval apply true? false?]))
 
-(defn apply [procedure arguments]
+(defn apply [eval-fn proc args]
   (cond
-    (p/primitive-procedure? procedure)
-    (p/apply-primitive-procedure procedure arguments)
-    (p/compound-procedure? procedure)
-    (eval-sequence
-      (p/procedure-body procedure)
-      (extend-env
-        (p/procedure-parameters procedure)
-        arguments
-        (p/procedure-env procedure)))
-    :else (Error. (str "Unknown procedure type -- apply " procedure))))
+    (p/primitive-procedure? proc) (p/apply-primitive-procedure proc args)
+    (p/compound-procedure? proc) (eval-sequence
+                                        eval-fn
+                                        (p/procedure-body proc)
+                                        (extend-env
+                                          (p/procedure-parameters proc)
+                                          args
+                                          (p/procedure-env proc)))
+    :else (throw (Error. (str "Unknown procedure type -- apply " proc)))))

@@ -24,10 +24,8 @@
 (defn mk-definition [variable value]
   (list 'define variable value))
 
-(declare eval)
-
-(defn eval-definition [exp env]
+(defn eval-definition [eval-fn exp env]
   (define-variable!
-    env
     (definition-variable exp)
-    (eval (definition-value exp) env)))
+    (eval-fn (definition-value exp) env)
+    env))

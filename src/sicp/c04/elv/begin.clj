@@ -16,10 +16,14 @@
     (last-exp? sq) (first-exp sq)
     :else (mk-begin sq)))
 
-(declare eval)
-
-(defn eval-sequence [sq env]
+;; Passing eval as the first parameter
+;; This required because of the recursive
+;; nature of eval-sequence and eval,
+;; eval in eval.clj calls eval-sequence in begin.clj
+;; which calls eval.clj.
+;; This can probably be refactored.
+(defn eval-sequence [eval-fn sq env]
   (cond
-    (last-exp? sq) (eval (first-exp sq) env)
-    :else (do (eval (first-exp sq) env)
-              (eval-sequence (rest-exps sq) env))))
+    (last-exp? sq) (eval-fn (first-exp sq) env)
+    :else (do (eval-fn (first-exp sq) env)
+              (recur eval-fn (rest-exps sq) env))))
