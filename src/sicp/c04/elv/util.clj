@@ -2,5 +2,5 @@
   (:refer-clojure :exclude [eval apply true? false?]))
 
 (defn tagged-list? [exp tag]
-  (and (list? exp)
+  (and (coll? exp)
        (= (first exp) tag)))

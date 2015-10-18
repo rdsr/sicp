@@ -29,4 +29,4 @@
     (application? exp) (apply eval
                               (eval (operator exp) env)
                               (eval-operands eval (operands exp) env))
-    :else (throw (Error. (str "Unknown expression type -- eval" exp)))))
+    :else (throw (Error. (str "Unknown expression type: " exp)))))

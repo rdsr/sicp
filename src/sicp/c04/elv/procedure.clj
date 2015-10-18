@@ -19,10 +19,12 @@
 
 (defn primitive-procedures []
   [['car first]
-   ['cdr second]
+   ['cdr rest]
    ['+ +]
    ['- -]
    ['* *]
+   ['empty? empty?]
+   ['list list]
    ['cons cons]
    ['null? nil?]])
 

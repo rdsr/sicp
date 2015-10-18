@@ -14,4 +14,4 @@
                                           (p/procedure-parameters proc)
                                           args
                                           (p/procedure-env proc)))
-    :else (throw (Error. (str "Unknown procedure type -- apply " proc)))))
+    :else (throw (Error. (str "Unknown procedure type: " proc)))))

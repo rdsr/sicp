@@ -3,4 +3,4 @@
 
 ;; -- quote
 (defn quoted? [exp] (tagged-list? exp 'quote))
-(defn text-of-quotation [exp] (rest exp))
+(defn text-of-quotation [exp] (second exp))
