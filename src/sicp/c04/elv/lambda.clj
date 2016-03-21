@@ -2,7 +2,7 @@
   (:use [sicp.c04.elv.util])
   (:refer-clojure :exclude [eval apply true? false?]))
 
-;; -- (lambda (x) (+ x 1))
+;; (lambda (x) ...)
 (defn lambda? [exp] (tagged-list? exp 'lambda))
 (defn lambda-parameters [exp] (second exp))
 (defn lambda-body [exp] (-> exp rest rest))

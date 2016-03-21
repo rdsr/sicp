@@ -27,8 +27,8 @@
    'define eval-definition
    'if     eval-if
 
-   'begin (fn [exp env]
-            (eval-sequence (begin-actions exp) env))
+   'begin (fn [eval-fn exp env]
+            (eval-sequence eval-fn (begin-actions exp) env))
 
 
    'cond   (fn [exp env]
@@ -49,5 +49,6 @@
     (self-evaluating? exp) exp
     (variable? exp) (lookup-variable-value exp env)
     (has-fn? exp) ((get-fn exp) exp env)
-    (application? exp) (apply (eval (operator exp) env)
-                              (eval-operands (operands exp) env))))
+    (application? exp) (apply eval
+                              (eval (operator exp) env)
+                              (eval-operands eval (operands exp) env))))

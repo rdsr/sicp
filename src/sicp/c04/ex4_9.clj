@@ -3,31 +3,24 @@
             [sicp.c04.elv.definition :as d]
             [sicp.c04.elv.if :as i]
             [sicp.c04.elv.util :as u]
-            [sicp.c04.elv.procedure :as p]))
-
-; (while pred exps)
-;((define (while)
-;   (if pred
-;       (begin exps (while))))
-;  (while))
+            [sicp.c04.elv.lambda :as l]))
 
 (defn while? [exp] (u/tagged-list? exp 'while))
 (defn while-pred [exp] (second exp))
 (defn while-body [exp] (nth exp 2))
 
-(defn- expand-while [pred body env]
+(defn- expand-while [pred body]
   (list (d/mk-definition
           'while
-          (p/mk-procedure
+          (l/mk-lambda
             ()
             (i/mk-if pred
                      (b/sequence->exp (list body '(while)))
-                     false)
-            env))
+                     false)))
         '(while)))
 
-(defn while->combination [exp env]
+(defn while->combination [exp]
   (let [pred (while-pred exp)
         body (while-body exp)]
-    (expand-while pred body env)))
+    (expand-while pred body)))
 

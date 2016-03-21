@@ -20,7 +20,8 @@
 ;; This required because of the recursive
 ;; nature of eval-sequence and eval,
 ;; eval in eval.clj calls eval-sequence in begin.clj
-;; which calls eval.clj.
+;; which calls eval again
+
 ;; This can probably be refactored.
 (defn eval-sequence [eval-fn sq env]
   (cond

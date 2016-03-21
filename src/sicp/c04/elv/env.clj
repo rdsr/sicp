@@ -63,4 +63,6 @@
 
 (def global-env (setup-env))
 (doseq [a global-env]
-  (println a))
+  (let [frame @a]
+    (doseq [name (keys frame)]
+      (println name))))
