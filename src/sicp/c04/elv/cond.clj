@@ -1,5 +1,5 @@
 (ns sicp.c04.elv.cond
-  (use [sicp.c04.elv.util])
+  (:use [sicp.c04.elv.util])
   (:require [sicp.c04.elv.if :refer [mk-if]]
             [sicp.c04.elv.begin :refer [sequence->exp]])
   (:refer-clojure :exclude [eval apply true? false?]))

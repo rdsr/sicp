@@ -19,7 +19,7 @@
     (if (symbol? e)
       (nth exp 2)
       (mk-lambda (rest (second exp))
-                 (nth exp 2)))))
+                 (drop 2 exp)))))
 
 (defn mk-definition [variable value]
   (list 'define variable value))

@@ -44,4 +44,4 @@
       (cons lambda exps))))
 
 (defn mk-let [args body]
-  (list 'let args body))
+  (concat ['let args] body))

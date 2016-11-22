@@ -27,7 +27,8 @@
           v2 '(define (x a b c d)
                       (+ a b c d))
           v3 '(define x
-                      (lambda (a b c d) (+ a b c d)))]
+                      (lambda (a b c d)
+                              (+ a b c d)))]
       (is (definition? v1))
       (is (definition? v2))
       (is (definition? v3))

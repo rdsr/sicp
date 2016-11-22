@@ -7,4 +7,4 @@
                (cons (f (car s))
                      (map f (cdr s)))))")
 
-(d/driver "(map (lambda (x) (+ x 1)) (list 1 2 3 4))")
+(d/driver "(map (lambda (x) (* x 1)) (list 1 2 3 4))")

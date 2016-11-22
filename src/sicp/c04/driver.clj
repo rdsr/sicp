@@ -3,7 +3,7 @@
   (:require [sicp.c04.elv.procedure :as p]
             [sicp.c04.eval :as elv]
             [sicp.c04.elv.env :as env])
-  (:import (java.io Reader StringReader PushbackReader)))
+  (:import (java.io StringReader PushbackReader)))
 
 (defn display [s]
   (newline) (println s) (newline))
@@ -23,3 +23,10 @@
         (when-not (nil? e)
           (user-print (elv/eval e env/global-env))
           (recur (read pbr false nil)))))))
+
+
+(driver "
+  (define (solve f y0 dt)
+    (define y (integral (delay dy) y0 dt))
+    (define dy (stream-map f y))
+    y)")

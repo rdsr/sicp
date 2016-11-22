@@ -24,9 +24,10 @@
     (d/definition? exp) (d/eval-definition eval exp env)
     (l/let? exp) (eval (l/let->combination exp) env)
     (f/if? exp) (f/eval-if eval exp env)
-    (lm/lambda? exp) (p/mk-procedure (lm/lambda-parameters exp)
-                                (lm/lambda-body exp)
-                                env)
+    (lm/lambda? exp) (p/mk-procedure
+                       (lm/lambda-parameters exp)
+                       (lm/lambda-body exp)
+                       env)
     (b/begin? exp) (b/eval-sequence eval (b/begin-actions exp) env)
     (c/cond? exp) (eval (c/cond->if exp) env)
     (app/application? exp) (ap/apply eval
