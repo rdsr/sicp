@@ -8,15 +8,14 @@
   (testing "simple while"
     (is (= (w/while->combination
              '(while (> i 0)
-                (println i) (set! i (dec i))))
+                (println i)
+                (set! i (dec i))))
            '((define while
                      (lambda
                        ()
                        (if (> i 0)
                          (begin (println i)
+                                (set! i (dec i))
                                 (while))
                          false)))
               (while))))))
-
-
-

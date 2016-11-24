@@ -7,14 +7,16 @@
 
 (deftest test-scan-out-defines
   (testing "test variable definitions in block structure"
-    (is (= (let [exp '(define (solve f y0 dt)
-                              (define y (integral (delay dy) y0 dt))
-                              (define dy (stream-map f y))
-                              y)
-                 lambda (d/definition-value exp)]
-             (scan-out-defines (l/lambda-body lambda)))
+    (let [exp '(define (solve f y0 dt)
+                       (define y (integral (delay dy) y0 dt))
+                       (define dy (stream-map f y))
+                       y)
+          lambda (d/definition-value exp)]
+      (is
+        (= (scan-out-defines (l/lambda-body lambda))
            '(let (( y *unassigned*)
                    (dy *unassigned*))
-              (set!  y (integral (delay dy) y0 dt))
-              (set! dy (stream-map f y))
-              y)))))
+              (begin
+                (set! y (integral (delay dy) y0 dt))
+                (set! dy (stream-map f y))
+                y)))))))

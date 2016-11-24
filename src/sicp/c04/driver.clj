@@ -23,10 +23,3 @@
         (when-not (nil? e)
           (user-print (elv/eval e env/global-env))
           (recur (read pbr false nil)))))))
-
-
-(driver "
-  (define (solve f y0 dt)
-    (define y (integral (delay dy) y0 dt))
-    (define dy (stream-map f y))
-    y)")

@@ -7,16 +7,19 @@
 
 (defn while? [exp] (u/tagged-list? exp 'while))
 (defn while-pred [exp] (second exp))
-(defn while-body [exp] (nth exp 2))
+(defn while-body [exp] (drop 2 exp))
 
 (defn- expand-while [pred body]
   (list (d/mk-definition
           'while
           (l/mk-lambda
             ()
-            (i/mk-if pred
-                     (b/sequence->exp (list body '(while)))
-                     false)))
+            ;; wrap if in a vec, since lambda expects body to be a seq
+            [(i/mk-if pred
+                      ;; we want the seq to be (exp1, exp2.. (while))
+                      ;; hence wrapping '(while) in a vec
+                      (b/sequence->exp (concat body ['(while)]))
+                      false)]))
         '(while)))
 
 (defn while->combination [exp]

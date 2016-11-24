@@ -11,11 +11,11 @@
     (p/apply-primitive-procedure proc args)
 
     (p/compound-procedure? proc)
-    (eval-fn
-      (p/procedure-body proc)
-      (extend-env
-        (p/procedure-parameters proc)
-        args
-        (p/procedure-env proc)))
+    (eval-sequence eval-fn
+                   (p/procedure-body proc)
+                   (extend-env
+                     (p/procedure-parameters proc)
+                     args
+                     (p/procedure-env proc)))
 
     :else (throw (Error. (str "Unknown procedure type: " proc)))))

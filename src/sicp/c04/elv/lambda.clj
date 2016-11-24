@@ -5,5 +5,5 @@
 ;; (lambda (x) ...)
 (defn lambda? [exp] (tagged-list? exp 'lambda))
 (defn lambda-parameters [exp] (second exp))
-(defn lambda-body [exp] (-> exp rest rest))
+(defn lambda-body [exp] (drop 2 exp))
 (defn mk-lambda [args body] (concat ['lambda args] body))

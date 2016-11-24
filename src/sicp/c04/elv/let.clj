@@ -35,7 +35,8 @@
         body (let-body exp)
         vars (let-arg-vars args)
         exps (let-arg-exps args)
-        lambda (mk-lambda vars body)]
+        ;; wrapping body in a vec, since lambda expects body to be a seq
+        lambda (mk-lambda vars [body])]
     (if (named-let? exp)
       (let [name (let-name exp)]
         (sequence->exp
@@ -43,5 +44,4 @@
                 (cons name exps))))
       (cons lambda exps))))
 
-(defn mk-let [args body]
-  (concat ['let args] body))
+(defn mk-let [args body] (list 'let args body))

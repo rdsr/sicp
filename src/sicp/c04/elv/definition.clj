@@ -17,7 +17,9 @@
 (defn definition-value [exp]
   (let [e (second exp)]
     (if (symbol? e)
+      ;; var definition
       (nth exp 2)
+      ;; function defintion
       (mk-lambda (rest (second exp))
                  (drop 2 exp)))))
 

@@ -10,7 +10,7 @@
 
 (defn lookup-variable-value [var e]
   (if (empty-env? e)
-    (throw (Error. (str "Unbound variable -- lookup-variable-value " var)))
+    (throw (Error. (str "Unbound variable -- lookup-variable-value -- " var)))
     (let [f (first-frame e)]
       (if (has-binding? @f var)
         (read-binding-value @f var)
@@ -62,7 +62,3 @@
     intial-env))
 
 (def global-env (setup-env))
-(doseq [a global-env]
-  (let [frame @a]
-    (doseq [name (keys frame)]
-      (println name))))

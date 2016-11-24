@@ -26,7 +26,8 @@
    ['empty? empty?]
    ['list list]
    ['cons cons]
-   ['null? nil?]])
+   ['null? nil?]
+   ['= =]])
 
 (defn primitive-procedure-names []
   (map first (primitive-procedures)))

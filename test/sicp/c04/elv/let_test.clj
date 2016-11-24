@@ -19,3 +19,8 @@
               (define sum (lambda (a b) (sum a b)))
               (sum 1 2))))))
 
+
+(let->combination
+  '(let ((a 1)
+          (b 2))
+     (+ a b)))

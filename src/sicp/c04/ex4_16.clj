@@ -1,5 +1,6 @@
 (ns sicp.c04.ex4-16
-  (:require [sicp.c04.elv.definition :as d]
+  (:require [sicp.c04.elv.begin :as b]
+            [sicp.c04.elv.definition :as d]
             [sicp.c04.elv.env :as e]
             [sicp.c04.elv.env.frames :as f]
             [sicp.c04.elv.let :as l]))
@@ -28,7 +29,7 @@
                                (d/definition-variable definition)
                                (d/definition-value definition)))]
         (l/mk-let sentinals
-                  (concat set-values body))))))
+                  (b/sequence->exp (concat set-values body)))))))
 
 ;; it is better to install 'scan-out-defines in mk-procedure
 ;; since it will be called only once, compared to apply
