@@ -21,5 +21,6 @@
     (binding [*read-eval* false]
       (loop [e (read pbr false nil)]
         (when-not (nil? e)
-          (user-print (elv/eval e env/global-env))
+          (let [r (elv/eval e env/global-env)]
+            (user-print r))
           (recur (read pbr false nil)))))))
