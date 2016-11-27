@@ -7,7 +7,7 @@
 
 (defn lookup-variable-value [var e]
   (if (e/empty-env? e)
-    (throw (Error. (str "Unbound variable -- lookup-variable-value " var)))
+    (throw (Error. (str "Unbound variable -- lookup-variable-value -- " var)))
     (let [f (e/first-frame e)]
       (if (f/has-binding? @f var)
         (let [v (f/read-binding-value @f var)]
