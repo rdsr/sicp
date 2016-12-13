@@ -31,7 +31,11 @@
 (defn define-variable! [var value e]
   ;; We assume the env always has atleast one
   ;; frame (with predefined vars and procedures
-  (swap! (first-frame e) add-binding var value) 'ok)
+  (swap! (first-frame e)
+         add-binding
+         var
+         value)
+  'ok)
 
 (defn set-variable-value! [var value e]
   (if (empty-env? e)
