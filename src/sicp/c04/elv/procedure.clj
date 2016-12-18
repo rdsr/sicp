@@ -23,6 +23,7 @@
    ['+ +]
    ['- -]
    ['* *]
+   ['/ /]
    ['empty? empty?]
    ['list list]
    ['cons cons]
