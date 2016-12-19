@@ -18,7 +18,8 @@
             [sicp.c04.elv.util :as u]
             [sicp.c04.elv.begin :refer [eval-sequence]]
             [sicp.c04.elv.env :refer [extend-env]])
-  (:import [java.io StringReader PushbackReader]))
+  (:import [java.io StringReader PushbackReader]
+           (clojure.lang IDeref)))
 
 ;; -- thunk
 (defn mk-thunk [exp env] ['thunk exp env])
@@ -27,6 +28,8 @@
 (defn thunk-env [obj] (nth obj 2))
 
 (declare eval force-it)
+
+;; -- force/delay
 
 (defn actual-value [op env]
   (force-it (eval op env)))
@@ -40,7 +43,38 @@
 (defn delay-it [exp env]
   (mk-thunk exp env))
 
-;;; -- driver
+;; --
+
+;; -- evaluated thunk
+(defrecord Thunk [exp env res])
+(defn mk-thunk [exp env] (atom (Thunk. exp env nil)))
+(defn thunk? [exp] (and (instance? IDeref exp) (instance? Thunk @exp)))
+(defn evaluated-thunk? [obj]
+  (and (thunk? obj)
+       (not (nil? (:res @obj)))))
+(defn thunk-exp [obj] (:exp @obj))
+(defn thunk-res [obj] (:res @obj))
+(defn thunk-env [obj] (:env @obj))
+(defn update-thunk! [obj res]
+  (swap! obj (fn [_ res] (Thunk. nil nil res)) res))
+
+(defn force-it [obj]
+  (cond
+    (evaluated-thunk? obj) (thunk-res obj)
+    (thunk? obj)
+    (let [res (actual-value
+                (thunk-exp obj)
+                (thunk-env obj))]
+      (update-thunk! obj res)
+      res)
+    :else obj))
+
+(defn delay-it [exp env]
+  (mk-thunk exp env))
+;; --
+
+
+;; -- driver
 
 (defn display [s]
   (newline)
@@ -140,5 +174,9 @@
   (define (try a b)
     (if (= a 0) 1 b))
 
+  (try 0 (/ 1 0))
+")
+
+(driver "
   (try 0 (/ 1 0))
 ")
