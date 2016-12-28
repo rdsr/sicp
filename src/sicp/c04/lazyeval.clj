@@ -58,6 +58,7 @@
 (defn update-thunk! [obj res]
   (swap! obj (fn [_ res] (Thunk. nil nil res)) res))
 
+;; -- force/delay when evaluated thunk could be in use
 (defn force-it [obj]
   (cond
     (evaluated-thunk? obj) (thunk-res obj)
@@ -99,7 +100,7 @@
             (user-print r))
           (recur (read pbr false nil)))))))
 
-;;; -- driver
+;; --
 
 
 (defn eval-if [exp env]
@@ -169,14 +170,3 @@
     :else (throw (Error. (str "Unknown expression type: " exp)))))
 
 
-;; test
-(driver "
-  (define (try a b)
-    (if (= a 0) 1 b))
-
-  (try 0 (/ 1 0))
-")
-
-(driver "
-  (try 0 (/ 1 0))
-")
