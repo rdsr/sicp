@@ -13,6 +13,6 @@
 
 (defn eval-assignment [eval-fn exp env]
   (e/set-variable-value!
-    env
     (assignemt-variable exp)
-    (eval-fn (assignemt-value exp) env)))
+    (eval-fn (assignemt-value exp) env)
+    env))
