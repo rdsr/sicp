@@ -128,6 +128,13 @@
             (app/rest-operands args)
             env))))
 
+;; see ex4_30.clj
+(defn eval-sequence-actual-value [sq env]
+  (cond
+    (b/last-exp? sq) (eval (b/first-exp sq) env)
+    :else (do (actual-value (b/first-exp sq) env)
+              (recur (b/rest-exps sq) env))))
+
 (defn apply [f args env]
   (cond
     (p/primitive-procedure? f)
@@ -136,7 +143,7 @@
       (list-of-arg-values args env))
 
     (p/compound-procedure? f)
-    (b/eval-sequence
+    (eval-sequence
       eval
       (p/procedure-body f)
       (extend-env

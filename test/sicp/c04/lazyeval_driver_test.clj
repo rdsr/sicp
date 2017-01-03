@@ -37,6 +37,7 @@
                       (f 3))
                     (x)")
 
+;; ycombinator
 (driver
   "((lambda (n)
       ((lambda (fact)
@@ -47,6 +48,7 @@
            (* k (ft ft (- k 1)))))))
    5)")
 
+;; lazy eval
 (driver "(define (try a b)
                       (if (= a 0) 1 b))
                     (try 0 (/ 1 0))")
