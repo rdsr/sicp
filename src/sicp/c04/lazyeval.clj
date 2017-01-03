@@ -143,7 +143,7 @@
       (list-of-arg-values args env))
 
     (p/compound-procedure? f)
-    (eval-sequence
+    (b/eval-sequence
       eval
       (p/procedure-body f)
       (extend-env
